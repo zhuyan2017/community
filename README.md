@@ -8,6 +8,10 @@
 [Bootstrap](https://v3.bootcss.com/getting_started/)
 [GitHub OAuth](https://developer.github.com/apps/building-oauth-apps/)
 [okHttp](https://square.github.io/okhttp/)
+[MySQL菜鸟教程](https://www.runoob.com/mysql/mysql-tutorial.html)
+[H2](http://www.h2database.com/html/main.html)
+[mvn仓库](https://mvnrepository.com/)
+[Spring](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-embedded-database-support)
 
 ## 工具
 [Git](https://git-scm.com/download)

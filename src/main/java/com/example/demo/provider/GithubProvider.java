@@ -6,7 +6,6 @@ import com.example.demo.dto.GithubUser;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 
 @Component
 public class GithubProvider {
@@ -27,7 +26,6 @@ public class GithubProvider {
         }
         return null;
     }
-
 
     public GithubUser getUser(String accessToken) {
         OkHttpClient client = new OkHttpClient();
