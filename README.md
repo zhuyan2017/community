@@ -12,11 +12,11 @@
 [H2](http://www.h2database.com/html/main.html)
 [mvn仓库](https://mvnrepository.com/)
 [Spring](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-embedded-database-support)
-[Flyway](https://flywaydb.org/)
 
 ## 工具
 [Git](https://git-scm.com/download)
 [Visual Paradigm](https://www.visual-paradigm.com)
+[Flyway](https://flywaydb.org/)
 
 ## 脚本
 ```sql
@@ -29,6 +29,7 @@ create table USER
     GMT_CREATE   BIGINT,
     GMT_MODIFIED BIGINT,
 );
-
-
+```
+```bash
+mvn flyway:migrate
 ```
