@@ -4,7 +4,6 @@ import com.example.demo.mapper.QuestionMapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Question;
 import com.example.demo.model.User;
-import org.h2.util.CurrentTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,26 +37,26 @@ public class PublishController {
             HttpServletRequest request,
             Model model) {
 
-        model.addAttribute("title",title);
-        model.addAttribute("description",description);
-        model.addAttribute("tag",tag);
+        model.addAttribute("title", title);
+        model.addAttribute("description", description);
+        model.addAttribute("tag", tag);
 
-        if(title==null||title.length()==0){
-            model.addAttribute("error","标题不能为空");
+        if (title == null || title.length() == 0) {
+            model.addAttribute("error", "标题不能为空");
             return "publish";
         }
-        if(description==null||description.length()==0){
-            model.addAttribute("error","内容不能为空");
+        if (description == null || description.length() == 0) {
+            model.addAttribute("error", "内容不能为空");
             return "publish";
         }
-        if(tag==null||tag.length()==0){
-            model.addAttribute("error","标签不能为空");
+        if (tag == null || tag.length() == 0) {
+            model.addAttribute("error", "标签不能为空");
             return "publish";
         }
 
         User user = null;
         Cookie[] cookies = request.getCookies();
-        if(cookies==null) return "publish";
+        if (cookies == null || cookies.length == 0) return "publish";
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("token")) {
                 String token = cookie.getValue();
