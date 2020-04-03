@@ -22,6 +22,7 @@
 [Visual Paradigm](https://www.visual-paradigm.com)
 [Flyway](https://flywaydb.org/)
 [Lombok](https://projectlombok.org/)
+[MyBatis Generator](http://mybatis.org/generator/index.html)
 
 ## 脚本
 ```sql
@@ -37,4 +38,5 @@ create table USER
 ```
 ```bash
 mvn flyway:migrate
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 ```
