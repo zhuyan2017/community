@@ -6,6 +6,7 @@ import com.example.demo.mapper.QuestionMapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Question;
 import com.example.demo.model.User;
+import com.example.demo.model.UserExample;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,10 +41,14 @@ public class QuestionService {
 
         PaginationDTO paginationDTO = new PaginationDTO();
         for (Question question : questions) {
-            User user = userMapper.findById(question.getCreator());
+            UserExample example = new UserExample();
+            example.createCriteria()
+                    .andAccountIdEqualTo(question.getCreator());
+            List<User> users = userMapper.selectByExample(example);
+            //User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
-            questionDTO.setUser(user);
+            questionDTO.setUser(users.get(0));
             questionDTOList.add(questionDTO);
         }
 
@@ -70,10 +75,14 @@ public class QuestionService {
 
         PaginationDTO paginationDTO = new PaginationDTO();
         for (Question question : questions) {
-            User user = userMapper.findById(question.getCreator());
+            UserExample example = new UserExample();
+            example.createCriteria()
+                    .andAccountIdEqualTo(question.getCreator());
+            List<User> users = userMapper.selectByExample(example);
+            //User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
-            questionDTO.setUser(user);
+            questionDTO.setUser(users.get(0));
             questionDTOList.add(questionDTO);
         }
 
@@ -85,9 +94,13 @@ public class QuestionService {
 
     public QuestionDTO getById(Integer id) {
         Question question = questionMapper.findById(id);
-        User user = userMapper.findById(question.getCreator());
+        UserExample example = new UserExample();
+        example.createCriteria()
+                .andAccountIdEqualTo(question.getCreator());
+        List<User> users = userMapper.selectByExample(example);
+        //User user = userMapper.findById(question.getCreator());
         QuestionDTO questionDTO = new QuestionDTO();
-        questionDTO.setUser(user);
+        questionDTO.setUser(users.get(0));
         BeanUtils.copyProperties(question, questionDTO);
         return questionDTO;
     }
