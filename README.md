@@ -23,6 +23,7 @@
 [Flyway](https://flywaydb.org/)
 [Lombok](https://projectlombok.org/)
 [MyBatis Generator](http://mybatis.org/generator/index.html)
+[PageHelper-Spring Boot](https://github.com/pagehelper/Mybatis-PageHelper)
 
 ## 脚本
 ```sql
