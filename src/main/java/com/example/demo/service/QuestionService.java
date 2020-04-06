@@ -2,6 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.dto.PaginationDTO;
 import com.example.demo.dto.QuestionDTO;
+import com.example.demo.exception.CustomizeErrorCode;
+import com.example.demo.exception.CustomizeException;
+import com.example.demo.mapper.QuestionExtMapper;
 import com.example.demo.mapper.QuestionMapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Question;
@@ -25,6 +28,9 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
+
     public PaginationDTO list(Integer page, Integer size) {
 
         Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
@@ -39,7 +45,7 @@ public class QuestionService {
 
         Integer offset = size * (page - 1);
 
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
+        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
 
         //List<Question> questions = questionMapper.list(offset, size);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
@@ -83,7 +89,7 @@ public class QuestionService {
         questionExample = new QuestionExample();
         questionExample.createCriteria()
                 .andCreatorEqualTo(userAccountId);
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
+        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample, new RowBounds(offset, size));
         //List<Question> questions = questionMapper.listByUserId(userAccountId, offset, size);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
@@ -110,7 +116,10 @@ public class QuestionService {
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria()
                 .andIdEqualTo(id);
-        List<Question> questions = questionMapper.selectByExample(questionExample);
+        List<Question> questions = questionMapper.selectByExampleWithBLOBs(questionExample);
+        if (questions == null || questions.size() == 0) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         Question question = questions.get(0);
         UserExample example = new UserExample();
         example.createCriteria()
@@ -129,6 +138,7 @@ public class QuestionService {
             questionMapper.insert(question);
         } else {
             Question updateQuestion = new Question();
+            BeanUtils.copyProperties(question, updateQuestion);
             updateQuestion.setTitle(question.getTitle());
             updateQuestion.setDescription(question.getDescription());
             updateQuestion.setTag(question.getTag());
@@ -136,8 +146,29 @@ public class QuestionService {
             QuestionExample example = new QuestionExample();
             example.createCriteria()
                     .andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(updateQuestion, example);
+            int updated = questionMapper.updateByExampleWithBLOBs(updateQuestion, example);
+            if (updated != 1) {
+                throw new CustomizeException(CustomizeErrorCode.UPDATED_ERROR);
+            }
             //questionMapper.update(question);
         }
+    }
+
+    public void incView(Integer id) {
+        /*
+        questionDTO.setViewCount(questionDTO.getViewCount() + 1);
+        Question updateQuestion = new Question();
+        updateQuestion.setViewCount(questionDTO.getViewCount());
+        //BeanUtils.copyProperties(questionDTO, updateQuestion);
+
+        QuestionExample example = new QuestionExample();
+        example.createCriteria()
+                .andIdEqualTo(questionDTO.getId());
+         */
+
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }
