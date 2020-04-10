@@ -135,7 +135,7 @@ public class QuestionService {
     public void createOrUpdate(Question question) {
         //Question dbQuestion = questionMapper.findById(question.getId());
         if (question.getId() == null) {
-            questionMapper.insert(question);
+            questionMapper.insertSelective(question);
         } else {
             Question updateQuestion = new Question();
             BeanUtils.copyProperties(question, updateQuestion);
